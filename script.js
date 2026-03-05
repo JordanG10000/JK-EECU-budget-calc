@@ -10,6 +10,10 @@ const table = /** @type {HTMLTableElement} */ (
 const estimated = /** @type {HTMLTableRowElement} */ (
     table.querySelector('tbody > tr')
 );
+
+const netIncome = /** @type {HTMLElement} */ (
+    document.querySelector("#netIncome")
+);
 const spent = /** @type {HTMLTableRowElement} */ (estimated.nextElementSibling);
 
 let income = 0;
@@ -18,6 +22,7 @@ income_input.addEventListener('input', () => {
     estimated.children.item(1).textContent = (income / 2).toFixed(2);
     estimated.children.item(2).textContent = (income * 0.3).toFixed(2);
     estimated.children.item(3).textContent = (income * 0.2).toFixed(2);
+    netIncome.textContent = +income_input.value;
 });
 
 let spent_on_needs = 0;
@@ -30,7 +35,8 @@ const savings_values = new Map();
 
 const needs = /** @type {NodeListOf<HTMLInputElement>} */ (
     document.querySelectorAll(
-        ':is(#page-1, #page-2, #page-3, #page-4) > input:not([placeholder=Entertainment])'
+        '#page-1'
+        // ':is(#page-1, #page-2, #page-3, #page-4) > input:not([placeholder=Entertainment])'
     )
 );
 
@@ -39,6 +45,9 @@ const wants = /** @type {NodeListOf<HTMLInputElement>} */ (
         'input[placeholder=Entertainment], #page-6 > input'
     )
 );
+
+console.log(wants);
+
 
 const savings = /** @type {NodeListOf<HTMLInputElement>} */ (
     document.querySelectorAll('#page-5 > input')
@@ -51,6 +60,7 @@ for (const input of needs) {
         /** @type {InputEvent & { target: HTMLInputElement }} */ ({
             target
         }) => {
+            console.log(needs, needs_values);
             needs_values.set(target.placeholder, +target.value);
             spent_on_needs = needs_values.values().reduce((a, b) => a + b, 0);
             spent.children.item(1).textContent = spent_on_needs.toFixed(2);
